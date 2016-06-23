@@ -1,4 +1,5 @@
-# DfUSMC (Depth from Uncalibrated Small Motion Clip)
+# DfUSMC
+(Depth from Uncalibrated Small Motion Clip)
 
 Source code and dataset for the paper:
 
