@@ -5,7 +5,7 @@ Source code and dataset for the paper:
 
 _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from Uncalibrated Small Motion Clip**](https://drive.google.com/file/d/0B7-4XlDU1W6rbUtlRW92b01YakU/view?usp=sharing), [**CVPR 2016**](http://cvpr2016.thecvf.com/)
 
-- [**Project page**](https://drive.google.com/file/d/0B7-4XlDU1W6rbUtlRW92b01YakU/view?usp=sharing)
+- [**Project page**](http://sites.google.com/site/hyowoncv/ha_cvpr16)
 
 ## How to Run
 
