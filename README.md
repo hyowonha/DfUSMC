@@ -10,7 +10,7 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 ## How to Run
 
 1. Open main.cpp
-- Set the filepath, data_name, and video_format properly.
+- Set filepath, data_name, and video_format properly.
 - Run
 
 ```
