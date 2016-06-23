@@ -1,11 +1,22 @@
-# DfUSMC
-Depth from Uncalibrated Small Motion Clip
+# DfUSMC (Depth from Uncalibrated Small Motion Clip)
 
-This is the source code for our CVPR 2016 paper:
+Source code and dataset for the paper:
 
-High-quality Depth from Uncalibrated Small Motion Clip
-Hyowon Ha, Sunghoon Im, Jaesik Park, Hae-Gon Jeon and In So Kweon
-IEEE Conference on Computer Vision and Pattern Recognition, 2016.
+_H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon, [**High-quality Depth from Uncalibrated Small Motion Clip**](https://drive.google.com/file/d/0B7-4XlDU1W6rbUtlRW92b01YakU/view?usp=sharing), [**CVPR 2016**](http://cvpr2016.thecvf.com/) (Oral presentation)
 
-More more information, please vision our project webpage:
-https://sites.google.com/site/hyowoncv/ha_cvpr16
+# Install
+
+```
+cmake .
+make
+```
+
+**IMPORTANT**: If you use this software please cite the following in any resulting publication:
+```
+@inproceedings{ha2016high,
+  title={High-quality Depth from Uncalibrated Small Motion Clip},
+  author={Ha, Hyowon and Im, Sunghoon and Park, Jaesik and Jeon, Hae-Gon and Kweon, In So},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  year={2016}
+}
+```
