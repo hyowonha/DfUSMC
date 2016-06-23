@@ -9,7 +9,7 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 
 ## How to Run
 
-- open main.cpp
+1. open main.cpp
 - modify the input path, file name, and file format accordingly.
 - run
 
