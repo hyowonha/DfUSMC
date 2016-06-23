@@ -30,7 +30,7 @@ make
 @inproceedings{ha2016high,
   title={High-quality Depth from Uncalibrated Small Motion Clip},
   author={Ha, Hyowon and Im, Sunghoon and Park, Jaesik and Jeon, Hae-Gon and Kweon, In So},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
   year={2016}
 }
 ```
