@@ -7,7 +7,7 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 
 - [**Project page**](https://drive.google.com/file/d/0B7-4XlDU1W6rbUtlRW92b01YakU/view?usp=sharing)
 
-## Install
+## How to Run
 
 ```
 cmake .
