@@ -9,9 +9,9 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 
 ## How to Run
 
-1. open main.cpp
-- modify the input path, file name, and file format accordingly.
-- run
+1. Open main.cpp
+- Modify the filepath, data_name, and video_format accordingly.
+- Run
 
 ```
 cmake .
