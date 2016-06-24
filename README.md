@@ -20,9 +20,10 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 4. Run
 
 ```
-sudo cmake .
-sudo make
+cmake .
+make
 ./DfUSMC _data_name_ _extension_
+(for example, ./DfUSMC Bikes avi)
 ```
 
 ## Important Information
