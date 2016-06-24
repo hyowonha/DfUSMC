@@ -20,9 +20,9 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 4. Run
 
 ```
-cmake .
+sudo cmake .
 sudo make
-./DfUSMC
+./DfUSMC _data_name_ _extension_
 ```
 
 ## Important Information

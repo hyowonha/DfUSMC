@@ -3,19 +3,27 @@
 //  DfUSMC: Depth from Uncalibrated Small Motion Clip
 //
 //  Created by Hyowon Ha on 2016. 6. 11..
-//  Copyright © 2016년 Hyowon Ha. All rights reserved.
+//  Copyright © 2016 Hyowon Ha. All rights reserved.
 //
 
 #include <iostream>
 #include "DfUSMC.hpp"
 
 int main(int argc, const char * argv[]) {
+
+    char data_name[1024], video_format[1024];
+
+    if (argc!=3) {
+        printf("Usage: DfUSMC <data_name> <video_extension>\n");
+        return -1;
+    }
+    else {
+	sprintf(data_name, "%s", argv[1]);
+	sprintf(video_format, "%s", argv[2]);
+    }
+    
     DfUSMC dfusmc;
-    
-    // input file path
-    char *data_name="Bikes";
-    char *video_format="avi";
-    
+
     // load small motion clip
     char fullpath[1024];
     sprintf(fullpath,"Dataset/%s.%s",data_name,video_format);
@@ -46,7 +54,7 @@ int main(int argc, const char * argv[]) {
     dfusmc.SaveDepthmapFiltered(fullpath);
 
     // (optional) save refined depthmap result.
-    sprintf(fullpath,"Result/%s_Filtered.bmp",data_name);
+    sprintf(fullpath,"Result/%s_Refined.bmp",data_name);
     dfusmc.SaveDepthmapRefined(fullpath);
 
     
