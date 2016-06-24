@@ -22,7 +22,7 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 ```
 cmake .
 make
-./DfUSMC _data_name_ _extension_
+./DfUSMC data_name video_extension
 (for example, ./DfUSMC Bikes avi)
 ```
 
