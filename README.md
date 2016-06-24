@@ -33,7 +33,7 @@ The current implementation uses only the first 30 frames of your video clip. If 
 
 **Dense matching step**
 
-We implemented the function "DenseMatching" to receive a scale for image downsampling and the number of labels for your convenience of testing. (Default: 0.5 scale and 64 labels for quick tests, but please remind that 1.0 and 256 were used in the paper)
+We implemented the function "DenseMatching" to receive a scale for image downsampling and the number of labels for your convenience in testing. (Default: 0.5 scale and 64 labels for quick tests, but please remind that 1.0 and 256 were used in the paper)
 
 ## Authors
 
