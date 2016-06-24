@@ -27,12 +27,13 @@ sudo make
 
 ## Important Information
 
-**Data loading**
-The current implementation uses only the first 30 frames of your video clip. If you want to try with a different number of images or different sampling rate, please modify "LoadSmallMotionClip" function.
-**Feature extraction and tracking**
-Feature extraction is based on OpenCV's "goodFeaturesToTrack" function and you can adjust the parameters in "FeatureExtractionAndTracking" function.
+**Frame selection**
+
+The current implementation uses only the first 30 frames of your video clip. If you want to try with a different number of images or different sampling rate, please modify this function.
+
 **Dense matching step**
-We implemented the function "DenseMatching" to receive a scale for image downsampling and the number of labels that you can adjust. (0.5 scale and 64 labels are set for a quick test, but 1.0 and 256 were used in the paper)
+
+We implemented the function "DenseMatching" to receive a scale for image downsampling and the number of labels that you can adjust. (Default: 0.5 scale and 64 labels for quick tests, but please remind that 1.0 and 256 were used in the paper)
 
 ## Authors
 
