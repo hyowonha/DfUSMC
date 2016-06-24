@@ -7,6 +7,11 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 
 - [**Project page**](http://sites.google.com/site/hyowoncv/ha_cvpr16)
 
+## Dependencies
+
+- [**OpenCV**](http://opencv.org)
+- [**Ceres solver**](http://ceres-solver.org)
+
 ## How to Run
 
 1. Put your clip in "Dataset" folder
