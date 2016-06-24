@@ -55,3 +55,30 @@ We implemented the function "DenseMatching" to receive a scale for image downsam
   year={2016}
 }
 ```
+## References
+
+@article{pami-15-qingxiong-yang,
+ author    = {Q. Yang},
+ title     = {Stereo Matching Using Tree Filtering},
+ journal = {PAMI},
+ volume = {37},
+ number = {4},
+ pages = {834 - 846},
+ year = {2015},
+}
+@article{tip-14-linchao-bao,
+  title={Tree Filtering: Efficient Structure-Preserving Smoothing With a Minimum Spanning Tree},
+  author={L. Bao and Y. Song and Q. Yang and H. Yuan and G. Wang},
+  journal={Image Processing, IEEE Transactions on},
+  year={2014},
+  volume={23},
+  number={2},
+  pages={555-569}, 
+}
+@inproceedings{cvpr-12-qingxiong-yang,
+ author    = {Q. Yang},
+ title     = {A Non-Local Cost Aggregation Method for Stereo Matching},
+ booktitle = {CVPR},
+ year      = {2012},
+ pages     = {1402-1409},
+}
