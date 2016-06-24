@@ -14,6 +14,8 @@
 #include "opencv2/opencv.hpp"
 #include "ceres/ceres.h"
 #include <time.h>
+#include "qx_basic.h"
+#include "qx_tree_upsampling.h"
 
 using namespace std;
 using namespace cv;
@@ -33,9 +35,10 @@ public:
     void BundleAdjustment();            // no input -> use our initial parameters
     void SavePointCloudPLY(char *fullpath);
     void UndistortImages();
-    void DenseMatching(double scale, int num_label, double lambda);
-    void SaveWTADepthmap(char *fullpath);
-    void SaveORDepthmap(char *fullpath);
+    void DenseMatching(double scale, int num_label, double lambda, double sigma);
+    void SaveDepthmapWTA(char *fullpath);
+    void SaveDepthmapFiltered(char *fullpath);
+    void SaveDepthmapRefined(char *fullpath);
     
 private:
     std::vector<Mat> images;
@@ -49,7 +52,7 @@ private:
     Mat ud_map, vd_map;
     Mat confidencemap;
     Mat depthmapWTA;
-    Mat depthmapOR; // outlier removal
+    Mat depthmapFiltered; // outlier removal
     Mat depthmapRefined;
     
     double cx, cy;
@@ -57,6 +60,7 @@ private:
     double f_new;
     double *poses;
     double *inv_depths;
+        
 };
 
 #endif /* DfUSMC_hpp */

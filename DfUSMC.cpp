@@ -407,7 +407,7 @@ void DfUSMC::UndistortImages() {
     vd_map=vd.clone();
 }
 
-void DfUSMC::DenseMatching(double scale, int num_label, double lambda){
+void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double sigma){
     double _f=f_new*scale;
     double _cx=cx*scale;
     double _cy=cy*scale;
@@ -527,9 +527,9 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda){
             remap(gximg[n], gxwarp, u1, v1, INTER_CUBIC);
             remap(gyimg[n], gywarp, u1, v1, INTER_CUBIC);
             
-            rwarp=min(max(rwarp,0.0),1.0);
-            gwarp=min(max(gwarp,0.0),1.0);
-            bwarp=min(max(bwarp,0.0),1.0);
+            //rwarp=min(max(rwarp,0.0),1.0);
+            //gwarp=min(max(gwarp,0.0),1.0);
+            //bwarp=min(max(bwarp,0.0),1.0);
             
             rwarp.copyTo(rps[n]);
             gwarp.copyTo(gps[n]);
@@ -639,24 +639,65 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda){
     
     cout<< "confidence threshold: "<<thresh << endl;
     
-    depthmapOR=depthmapWTA.clone();
+    double scalar=255.0/(num_label-1);
+    double **disparity=new double*[row];
+    //double **disparity_gt=new double*[row];
+    depthmapFiltered=depthmapWTA.clone();
     for(int i=0;i<row;i++) {
+        disparity[i]=new double[col];
+        //disparity_gt[i]=new double[col];
         for(int j=0;j<col;j++) {
             if(mask[i*col+j]==false||confidencemap.at<float>(i,j)<thresh) {
-                depthmapOR.at<unsigned char>(i,j)=(unsigned char)0;
+                depthmapFiltered.at<unsigned char>(i,j)=(unsigned char)0;
             }
+            //disparity_gt[i][j]=double(depthmapFiltered.at<unsigned char>(i,j));
+            disparity[i][j]=(double)(depthmapFiltered.at<unsigned char>(i,j))/scalar;
+            if(disparity[i][j]<=2)
+            {
+                disparity[i][j]=0;
+            }
+        }
+    }
+    
+    // Refinement: Qingxiong Yang's method, A Non-Local Cost Aggregation Method for Stereo Matching, CVPR 2012
+
+    qx_tree_upsampling m_tree_upsampling;//upsampling class
+    m_tree_upsampling.init(row,col,num_label-1,sigma);
+    
+    Mat img0_undist;
+    remap(images[0], img0_undist, ud_map, vd_map, CV_INTER_CUBIC);
+    unsigned char ***guidance_img_=new unsigned char**[1];
+    guidance_img_[0]=new unsigned char*[1];
+    guidance_img_[0][0]=new unsigned char[row*col*3];
+    Mat guidance_img=Mat(row,col,CV_8UC3,guidance_img_[0][0]);
+    resize(img0_undist,guidance_img,Size(),scale,scale);
+    imshow("guidance_img",guidance_img);
+    waitKey(1);
+    m_tree_upsampling.build_minimum_spanning_tree(guidance_img_);
+    m_tree_upsampling.disparity_upsampling(disparity);
+    
+    depthmapRefined=depthmapFiltered.clone();
+    for(int i=0;i<row;i++) {
+        for(int j=0;j<col;j++) {
+            depthmapRefined.at<unsigned char>(i,j)=(unsigned char)(disparity[i][j]*scalar+0.5);
         }
     }
 }
 
-void DfUSMC::SaveWTADepthmap(char *fullpath) {
+void DfUSMC::SaveDepthmapWTA(char *fullpath) {
     imwrite(fullpath, depthmapWTA);
     imshow("depthmapWTA",depthmapWTA);
     waitKey(1);
 }
 
-void DfUSMC::SaveORDepthmap(char *fullpath) {
-    imwrite(fullpath, depthmapOR);
-    imshow("depthmapOR",depthmapOR);
+void DfUSMC::SaveDepthmapFiltered(char *fullpath) {
+    imwrite(fullpath, depthmapFiltered);
+    imshow("depthmapFiltered",depthmapFiltered);
+    waitKey(1);
+}
+
+void DfUSMC::SaveDepthmapRefined(char *fullpath) {
+    imwrite(fullpath, depthmapRefined);
+    imshow("depthmapRefined",depthmapRefined);
     waitKey(1);
 }

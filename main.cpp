@@ -18,7 +18,7 @@ int main(int argc, const char * argv[]) {
     
     // load small motion clip
     char fullpath[1024];
-    sprintf(fullpath,"./Dataset/%s.%s",data_name,video_format);
+    sprintf(fullpath,"Dataset/%s.%s",data_name,video_format);
     dfusmc.LoadSmallMotionClip(fullpath);
     
     // feature extraction and tracking
@@ -28,22 +28,27 @@ int main(int argc, const char * argv[]) {
     dfusmc.BundleAdjustment();
     
     // (optional) save sparse reconstruction result.
-    sprintf(fullpath,"./Result/%s.ply",data_name);
+    sprintf(fullpath,"Result/%s.ply",data_name);
     dfusmc.SavePointCloudPLY(fullpath);
     
     // image undistortion
     dfusmc.UndistortImages();
     
     // dense matching
-    dfusmc.DenseMatching(0.5, 64, 3.0);
+    dfusmc.DenseMatching(0.5, 64, 3.0, 0.1);
     
     // (optional) save Winner-Takes-All depthmap result.
-    sprintf(fullpath,"./Result/%s_WTA.bmp",data_name);
-    dfusmc.SaveWTADepthmap(fullpath);
+    sprintf(fullpath,"Result/%s_WTA.bmp",data_name);
+    dfusmc.SaveDepthmapWTA(fullpath);
     
-    // (optional) save outlier removal depthmap result.
-    sprintf(fullpath,"./Result/%s_Filtered.bmp",data_name);
-    dfusmc.SaveORDepthmap(fullpath);
+    // (optional) save filtered depthmap result.
+    sprintf(fullpath,"Result/%s_Filtered.bmp",data_name);
+    dfusmc.SaveDepthmapFiltered(fullpath);
+
+    // (optional) save refined depthmap result.
+    sprintf(fullpath,"Result/%s_Filtered.bmp",data_name);
+    dfusmc.SaveDepthmapRefined(fullpath);
+
     
     waitKey(0);
     
