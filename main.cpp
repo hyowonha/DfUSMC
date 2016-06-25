@@ -10,24 +10,27 @@
 #include "DfUSMC.hpp"
 
 int main(int argc, const char * argv[]) {
-
     char data_name[1024], video_format[1024];
-
+    
     if (argc!=3) {
         printf("Usage: DfUSMC <data_name> <video_extension>\n");
         return -1;
     }
     else {
-	sprintf(data_name, "%s", argv[1]);
-	sprintf(video_format, "%s", argv[2]);
+        sprintf(data_name, "%s", argv[1]);
+        sprintf(video_format, "%s", argv[2]);
     }
     
     DfUSMC dfusmc;
-
+    
     // load small motion clip
     char fullpath[1024];
     sprintf(fullpath,"Dataset/%s.%s",data_name,video_format);
     dfusmc.LoadSmallMotionClip(fullpath);
+    
+    // (optional) save Reference image
+    sprintf(fullpath,"Result/%s_ref.bmp",data_name);
+    dfusmc.SaveReferenceImage(fullpath);
     
     // feature extraction and tracking
     dfusmc.FeatureExtractionAndTracking();
@@ -43,21 +46,20 @@ int main(int argc, const char * argv[]) {
     dfusmc.UndistortImages();
     
     // dense matching
-    dfusmc.DenseMatching(0.5, 64, 3.0, 0.1);
+    dfusmc.DenseMatching(0.5, 64, 3.0, 0.2);
     
     // (optional) save Winner-Takes-All depthmap result.
     sprintf(fullpath,"Result/%s_WTA.bmp",data_name);
-    dfusmc.SaveDepthmapWTA(fullpath);
+    dfusmc.SaveDepthmapWTA(fullpath, true);
     
     // (optional) save filtered depthmap result.
     sprintf(fullpath,"Result/%s_Filtered.bmp",data_name);
-    dfusmc.SaveDepthmapFiltered(fullpath);
+    dfusmc.SaveDepthmapFiltered(fullpath, true);
 
     // (optional) save refined depthmap result.
     sprintf(fullpath,"Result/%s_Refined.bmp",data_name);
-    dfusmc.SaveDepthmapRefined(fullpath);
+    dfusmc.SaveDepthmapRefined(fullpath, true);
 
-    
     waitKey(0);
     
     std::cout << "Done.\n";
