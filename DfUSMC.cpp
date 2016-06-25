@@ -3,7 +3,7 @@
 //  DfUSMC
 //
 //  Created by Hyowon Ha on 2016. 6. 11..
-//  Copyright © 2016년 Hyowon Ha. All rights reserved.
+//  Copyright © 2016 Hyowon Ha. All rights reserved.
 //
 
 #include "DfUSMC.hpp"
@@ -29,6 +29,13 @@ void DfUSMC::LoadSmallMotionClip(char *fullpath)
         cap >> frame; // get a new frame from camera
         images.push_back(frame);
     }
+}
+
+void DfUSMC::SaveReferenceImage(char *fullpath)
+{
+    imwrite(fullpath, images[0]);
+    imshow("Reference image", images[0]);
+    waitKey(1);
 }
 
 void DfUSMC::FeatureExtractionAndTracking()
@@ -401,10 +408,10 @@ void DfUSMC::UndistortImages() {
         x=x+dx;
         y=y+dy;
     }
-    Mat ud=(f*x+cx);
-    ud_map=ud.clone();
-    Mat vd=(f*y+cy);
-    vd_map=vd.clone();
+    Mat udx=(f*x+cx);
+    ud_mapx=udx.clone();
+    Mat udy=(f*y+cy);
+    ud_mapy=udy.clone();
 }
 
 void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double sigma){
@@ -447,7 +454,7 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double si
         Mat img_dist;
         images[i].convertTo(img_dist,CV_32FC3,1/255.0);
         Mat img_undist;
-        remap(img_dist, img_undist, ud_map, vd_map, CV_INTER_CUBIC);
+        remap(img_dist, img_undist, ud_mapx, ud_mapy, CV_INTER_CUBIC);
         Mat _img_undist;
         resize(img_undist,_img_undist,Size(),scale,scale);
         imshow("undistorted images",_img_undist);
@@ -470,6 +477,7 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double si
     Mat x0=Mat(row,col,CV_32FC1);
     Mat y0=Mat(row,col,CV_32FC1);
     
+    // meshgrid
     for(int i=0;i<row;i++){
         for(int j=0;j<col;j++){
             u0.at<float>(i,j)=j;
@@ -478,6 +486,22 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double si
             y0.at<float>(i,j)=i/_f - _cy/_f;
         }
     }
+    // compute the d->u mapping for distorting the final depth map.
+    Mat xd=Mat(image_height, image_width, CV_32F);
+    Mat yd=Mat(image_height, image_width, CV_32F);
+    for(int i=0;i<image_height;i++) {
+        for(int j=0;j<image_width;j++) {
+            xd.at<float>(i,j)=(j-cx)/f;
+            yd.at<float>(i,j)=(i-cy)/f;
+        }
+    }
+    Mat r2d=xd.mul(xd)+yd.mul(yd);
+    Mat rad=1+k1*r2d+k2*r2d.mul(r2d);
+    Mat xd_=xd.mul(rad);
+    Mat yd_=yd.mul(rad);
+    
+    du_mapx=_f*xd_+_cx;
+    du_mapy=_f*yd_+_cy;
     
     Mat *rps=new Mat[num_image];
     Mat *gps=new Mat[num_image];
@@ -612,7 +636,7 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double si
     
     Mat white=Mat::ones(image_height,image_width,CV_32F);
     Mat white_undist;
-    remap(white, white_undist, ud_map, vd_map, CV_INTER_CUBIC);
+    remap(white, white_undist, ud_mapx, ud_mapy, CV_INTER_CUBIC);
     Mat _white_undist;
     resize(white_undist, _white_undist, Size(), scale, scale);
     bool *mask=new bool[row*col];
@@ -665,7 +689,7 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double si
     m_tree_upsampling.init(row,col,num_label-1,sigma);
     
     Mat img0_undist;
-    remap(images[0], img0_undist, ud_map, vd_map, CV_INTER_CUBIC);
+    remap(images[0], img0_undist, ud_mapx, ud_mapy, CV_INTER_CUBIC);
     unsigned char ***guidance_img_=new unsigned char**[1];
     guidance_img_[0]=new unsigned char*[1];
     guidance_img_[0][0]=new unsigned char[row*col*3];
@@ -684,20 +708,32 @@ void DfUSMC::DenseMatching(double scale, int num_label, double lambda, double si
     }
 }
 
-void DfUSMC::SaveDepthmapWTA(char *fullpath) {
-    imwrite(fullpath, depthmapWTA);
-    imshow("depthmapWTA",depthmapWTA);
+void DfUSMC::SaveDepthmapWTA(char *fullpath, bool bwdmapping) {
+    Mat temp;
+    if(bwdmapping) remap(depthmapWTA, temp, du_mapx, du_mapy, CV_INTER_CUBIC);
+    else temp=depthmapWTA;
+    
+    imwrite(fullpath, temp);
+    imshow("depthmapWTA",temp);
     waitKey(1);
 }
 
-void DfUSMC::SaveDepthmapFiltered(char *fullpath) {
-    imwrite(fullpath, depthmapFiltered);
-    imshow("depthmapFiltered",depthmapFiltered);
+void DfUSMC::SaveDepthmapFiltered(char *fullpath, bool bwdmapping) {
+    Mat temp;
+    if(bwdmapping) remap(depthmapFiltered, temp, du_mapx, du_mapy, CV_INTER_CUBIC);
+    else temp=depthmapFiltered;
+    
+    imwrite(fullpath, temp);
+    imshow("depthmapFiltered",temp);
     waitKey(1);
 }
 
-void DfUSMC::SaveDepthmapRefined(char *fullpath) {
-    imwrite(fullpath, depthmapRefined);
-    imshow("depthmapRefined",depthmapRefined);
+void DfUSMC::SaveDepthmapRefined(char *fullpath, bool bwdmapping) {
+    Mat temp;
+    if(bwdmapping) remap(depthmapRefined, temp, du_mapx, du_mapy, CV_INTER_CUBIC);
+    else temp=depthmapRefined;
+    
+    imwrite(fullpath, temp);
+    imshow("depthmapRefined",temp);
     waitKey(1);
 }
