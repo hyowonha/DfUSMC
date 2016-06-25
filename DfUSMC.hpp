@@ -3,7 +3,7 @@
 //  DfUSMC
 //
 //  Created by Hyowon Ha on 2016. 6. 11..
-//  Copyright © 2016년 Hyowon Ha. All rights reserved.
+//  Copyright © 2016 Hyowon Ha. All rights reserved.
 //
 
 #ifndef DfUSMC_hpp
@@ -30,15 +30,16 @@ public:
     }
     
     void LoadSmallMotionClip(char *fullpath);
+    void SaveReferenceImage(char *fullpath);
     void FeatureExtractionAndTracking();
     void BundleAdjustment(double f_init, double k1_init, double k2_init); // bundle adjustment with given initial parameters
     void BundleAdjustment();            // no input -> use our initial parameters
     void SavePointCloudPLY(char *fullpath);
     void UndistortImages();
     void DenseMatching(double scale, int num_label, double lambda, double sigma);
-    void SaveDepthmapWTA(char *fullpath);
-    void SaveDepthmapFiltered(char *fullpath);
-    void SaveDepthmapRefined(char *fullpath);
+    void SaveDepthmapWTA(char *fullpath, bool redistort);
+    void SaveDepthmapFiltered(char *fullpath, bool redistort);
+    void SaveDepthmapRefined(char *fullpath, bool redistort);
     
 private:
     std::vector<Mat> images;
@@ -49,7 +50,8 @@ private:
     Mat features;
     int num_feature;
     
-    Mat ud_map, vd_map;
+    Mat ud_mapx, ud_mapy; // undistorted->distorted mapping for dense matching
+    Mat du_mapx, du_mapy; // distorted->undistorted mapping for final visualization
     Mat confidencemap;
     Mat depthmapWTA;
     Mat depthmapFiltered; // outlier removal
