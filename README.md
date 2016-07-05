@@ -28,7 +28,7 @@ make
 
 **Frame selection**
 
-The current implementation uses only the first 30 frames of your video clip. If you want to try with a different number of images or different sampling rate, please modify this function.
+The current implementation uses only the first 30 frames of your video clip. If you want to try with a different number of images or different sampling rate, please modify the "LoadSmallMotionClip" function.
 
 **Dense matching step**
 
