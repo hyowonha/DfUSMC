@@ -15,9 +15,7 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 ## How to Run
 
 1. Put your small motion clip in "Dataset" folder
-2. Open main.cpp
-3. Change "data_name" and "video_format" accordingly.
-4. Run (with sudo)
+2. Run (with sudo)
 
 ```
 cmake .
