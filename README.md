@@ -9,7 +9,7 @@ _H. Ha, S. Im, J. Park, H.-G. Jeon and I.S. Kweon_, [**High-quality Depth from U
 
 ## Dependencies
 
-- [**OpenCV**](http://opencv.org)
+- [**OpenCV 2.4.12**](http://opencv.org)
 - [**Ceres solver**](http://ceres-solver.org)
 
 ## How to Run
