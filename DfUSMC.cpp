@@ -286,7 +286,7 @@ void DfUSMC::SavePointCloudPLY(char *fullpath) {
         double tx=poses[i*6+3],ty=poses[i*6+4],tz=poses[i*6+5];
         float x_cam=-tx-rz*ty+ry*tz;
         float y_cam=rz*tx-ty-rx*tz;
-        float z_cam=-ry*tx+rx*ty+tz;
+        float z_cam=-ry*tx+rx*ty-tz;
         fwrite(&x_cam, sizeof(float), 1, out);
         fwrite(&y_cam, sizeof(float), 1, out);
         fwrite(&z_cam, sizeof(float), 1, out);
